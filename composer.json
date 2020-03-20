@@ -15,6 +15,7 @@
     "minimum-stability": "stable",
     "require": {
         "php": ">=7.3",
-        "mailjet/mailjet-apiv3-php": "^1.4"
+        "mailjet/mailjet-apiv3-php": "^1.4",
+        "lianhua/email": "^1.0"
     }
 }

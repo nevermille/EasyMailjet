@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "94357bf0bc3f1c0d3dbb19eee86ee1dd",
+    "content-hash": "78973a719ec55e4c156eeb2a8c54cb3a",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -194,6 +194,46 @@
                 "url"
             ],
             "time": "2019-07-01T23:21:34+00:00"
+        },
+        {
+            "name": "lianhua/email",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Nevermille/Email.git",
+                "reference": "703d95578f6eb47a3859dd54b9522bce49338245"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Nevermille/Email/zipball/703d95578f6eb47a3859dd54b9522bce49338245",
+                "reference": "703d95578f6eb47a3859dd54b9522bce49338245",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Lianhua\\Email\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Camille Nevermind",
+                    "email": "admin@lianhua.dev"
+                }
+            ],
+            "description": "A simple PHP class for emails",
+            "time": "2020-03-20T15:42:32+00:00"
         },
         {
             "name": "mailjet/mailjet-apiv3-php",
