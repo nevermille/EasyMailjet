@@ -2,8 +2,8 @@
 
 use Lianhua\EasyMailjet\EasyMailjet;
 use PHPUnit\Framework\TestCase;
-
-use function PHPUnit\Framework\assertNotNull;
+use Lianhua\Email\Email;
+use Lianhua\Email\EmailAddress;
 
 /*
 EasyMailjet Library
@@ -37,6 +37,23 @@ class EasyMailjetTest extends TestCase
     public function testConstruct()
     {
         $mj = new EasyMailjet(getenv("MJ_KEY"), getenv("MJ_SECRET"));
-        assertNotNull($mj);
+        $this->assertNotNull($mj);
+    }
+
+    /**
+     * @brief Tests a simple mail with only a message
+     * @return void
+     */
+    public function testSendSimpleMail()
+    {
+        $email = new Email();
+        $email->setFrom(new EmailAddress(getenv("LH_MAIL_SENDER"), "Lianhua Studio"));
+        $email->addTo(new EmailAddress("test@yopmail.com", "Test"));
+        $email->setMessage("This is an email test by mailjet");
+        $email->setSubject("Test message");
+
+        $mj = new EasyMailjet(getenv("MJ_KEY"), getenv("MJ_SECRET"));
+        $mj->setSandbox(true);
+        $this->assertTrue($mj->sendMail($email, $res));
     }
 }

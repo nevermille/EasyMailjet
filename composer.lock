@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d422ffa07390a78adb37e545c39cde98",
+    "content-hash": "999b3cc5a5bd527ecc07c5b763b19723",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -197,16 +197,16 @@
         },
         {
             "name": "lianhua/email",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nevermille/Email.git",
-                "reference": "703d95578f6eb47a3859dd54b9522bce49338245"
+                "reference": "18fd9db01e9b7e130c1aeb2c282445fbcba728f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nevermille/Email/zipball/703d95578f6eb47a3859dd54b9522bce49338245",
-                "reference": "703d95578f6eb47a3859dd54b9522bce49338245",
+                "url": "https://api.github.com/repos/Nevermille/Email/zipball/18fd9db01e9b7e130c1aeb2c282445fbcba728f1",
+                "reference": "18fd9db01e9b7e130c1aeb2c282445fbcba728f1",
                 "shasum": ""
             },
             "require": {
@@ -233,7 +233,7 @@
                 }
             ],
             "description": "A simple PHP class for emails",
-            "time": "2020-03-20T15:42:32+00:00"
+            "time": "2020-03-21T12:01:43+00:00"
         },
         {
             "name": "mailjet/mailjet-apiv3-php",

@@ -1,6 +1,8 @@
 <?php namespace Lianhua\EasyMailjet;
 
 use Exception;
+use Lianhua\Email\Email;
+use Lianhua\Email\EmailAddress;
 
 /*
 EasyMailjet Library
@@ -52,6 +54,63 @@ class EasyMailjet
     protected $sandbox;
 
     /**
+     * @brief Converts an EmailAddress to an array
+     * @param EmailAddress $address The address to convert
+     * @return array The address array
+     */
+    protected function getAddressData(EmailAddress $address): array
+    {
+        $data = [];
+        $data["Email"] = $address->getAddress();
+        $data["Name"] = $address->getName();
+
+        return $data;
+    }
+
+    protected function getMultipleAddressesData(array $addresses): array
+    {
+        $data = [];
+
+        foreach ($addresses as $address) {
+            $data[] = $this->getAddressData($address);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @brief Sends an email
+     * @param Email $email The email to send
+     * @param mixed $res The response from the server
+     * @return bool True if send succed, false otherwise
+     */
+    public function sendMail(Email $email, &$res = null): bool
+    {
+        $data = [];
+        $message = [];
+
+        $message ["From"] = $this->getAddressData($email->getFrom());
+        $message ["To"] = $this->getMultipleAddressesData($email->getTo());
+        $message ["Subject"] = $email->getSubject();
+        $message ["TextPart"] = $email->getAlternateContent();
+        $message ["HTMLPart"] = $email->getMessage();
+
+        $data["Messages"] = [$message];
+
+        if ($this->sandbox) {
+            $data["SandboxMode"] = true;
+        }
+
+        $response = $this->mailjet->post(\Mailjet\Resources::$Email, ["body" => $data]);
+
+        if ($res !== null) {
+            $res = $response->getData();
+        }
+
+        return $response->success();
+    }
+
+    /**
      * @brief Enables or disables sandbox mode
      * @param bool $val
      * @return void
@@ -67,6 +126,13 @@ class EasyMailjet
         $this->sandbox = $val;
     }
 
+    /**
+     * @brief The constructor
+     * @param string $key The public MJ API key
+     * @param string $secret The private MJ API key
+     * @return void
+     * @throws Exception
+     */
     public function __construct(string $key, string $secret)
     {
         if (empty($key) || empty($secret)) {
