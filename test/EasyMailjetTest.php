@@ -24,11 +24,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 /**
- * @file TestEasyMailjet.php
+ * @file EasyMailjetTest.php
  * @author Camille Nevermind
  */
 
-class TestEasyMailjet extends TestCase
+class EasyMailjetTest extends TestCase
 {
     /**
      * @brief Tests object construction
