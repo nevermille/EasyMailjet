@@ -13,6 +13,11 @@
             "email": "admin@lianhua.dev"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "Lianhua\\EasyMailjet\\": "src/"
+        }
+    },
     "minimum-stability": "stable",
     "require": {
         "php": ">=7.3",
