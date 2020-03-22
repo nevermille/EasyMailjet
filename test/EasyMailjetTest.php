@@ -58,4 +58,57 @@ class EasyMailjetTest extends TestCase
         $mj->setSandbox(true);
         $this->assertTrue($mj->sendMail($email, $res));
     }
+
+    /**
+     * @brief Tests a simple mail with an attachment
+     * @return void
+     */
+    public function testSendMailWithAttachment()
+    {
+        $email = new Email();
+        $email->setFrom(new EmailAddress(getenv("LH_MAIL_SENDER"), "Lianhua Studio"));
+        $email->addTo(new EmailAddress("test@yopmail.com", "Test"));
+        $email->setMessage("This is an email test by mailjet");
+        $email->setSubject("Test message");
+        $email->addAttachment(__FILE__);
+
+        $mj = new EasyMailjet(getenv("MJ_KEY"), getenv("MJ_SECRET"));
+        $mj->setSandbox(true);
+        $this->assertTrue($mj->sendMail($email, $res));
+    }
+
+    /**
+     * @brief Tests a simple mail with custom ids
+     * @return void
+     */
+    public function testSendMailWithCustomIds()
+    {
+        $email = new Email();
+        $email->setFrom(new EmailAddress(getenv("LH_MAIL_SENDER"), "Lianhua Studio"));
+        $email->addTo(new EmailAddress("test@yopmail.com", "Test"));
+        $email->setMessage("This is an email test by mailjet");
+        $email->setSubject("Test message");
+
+        $mj = new EasyMailjet(getenv("MJ_KEY"), getenv("MJ_SECRET"));
+        $mj->setSandbox(true);
+        $this->assertTrue($mj->sendMail($email, $res, date("Ymd"), date("His")));
+    }
+
+    /**
+     * @brief Tests a simple mail with custom headers
+     * @return void
+     */
+    public function testSendMailWithHeaders()
+    {
+        $email = new Email();
+        $email->setFrom(new EmailAddress(getenv("LH_MAIL_SENDER"), "Lianhua Studio"));
+        $email->addTo(new EmailAddress("test@yopmail.com", "Test"));
+        $email->setMessage("This is an email test by mailjet");
+        $email->setSubject("Test message");
+        $email->addHeader("X-CUSTOM1", "Welcome");
+
+        $mj = new EasyMailjet(getenv("MJ_KEY"), getenv("MJ_SECRET"));
+        $mj->setSandbox(true);
+        $this->assertTrue($mj->sendMail($email, $res));
+    }
 }

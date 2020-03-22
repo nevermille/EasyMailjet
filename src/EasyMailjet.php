@@ -123,8 +123,14 @@ class EasyMailjet
         $data = [];
         $message = [];
 
-        $message ["From"] = $this->getAddressData($email->getFrom());
-        $message ["ReplyTo"] = $this->getAddressData($email->getReply());
+        if ($email->getFrom() !== null) {
+            $message ["From"] = $this->getAddressData($email->getFrom());
+        }
+
+        if ($email->getReply() !== null) {
+            $message ["ReplyTo"] = $this->getAddressData($email->getReply());
+        }
+
         $message ["To"] = $this->getMultipleAddressesData($email->getTo());
 
         if (!empty($email->getCc())) {
@@ -142,8 +148,6 @@ class EasyMailjet
         if (!empty($email->getAttachments())) {
             $message["Attachments"] = $this->getMultipleAttachmentData($email->getAttachments());
         }
-
-        $data["Messages"] = [$message];
 
         if ($this->sandbox) {
             $data["SandboxMode"] = true;
@@ -170,6 +174,7 @@ class EasyMailjet
             }
         }
 
+        $data["Messages"] = [$message];
         $response = $this->mailjet->post(\Mailjet\Resources::$Email, ["body" => $data]);
 
         if ($res !== null) {
