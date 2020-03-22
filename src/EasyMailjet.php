@@ -53,10 +53,12 @@ class EasyMailjet
      */
     protected $sandbox;
 
+    protected $deduplicate;
+
     /**
      * @brief Converts an EmailAddress to an array
      * @param EmailAddress $address The address to convert
-     * @return array The address array
+     * @return array The data array
      */
     protected function getAddressData(EmailAddress $address): array
     {
@@ -67,6 +69,11 @@ class EasyMailjet
         return $data;
     }
 
+    /**
+     * @brief Converts an array of EmailAddress to an array of arrays
+     * @param array $addresses An array of addresses to convert
+     * @return array The data array
+     */
     protected function getMultipleAddressesData(array $addresses): array
     {
         $data = [];
@@ -79,26 +86,88 @@ class EasyMailjet
     }
 
     /**
+     * @brief Converts a file to an attachment data
+     * @param string $file A file to convert
+     * @return array The attachment data
+     */
+    protected function getAttachmentData(string $file): array
+    {
+        $data = [];
+
+        $data["ContentType"] = mime_content_type($file);
+        $data["Filename"] = basename($file);
+        $data["Base64Content"] = base64_encode(file_get_contents($file));
+
+        return $data;
+    }
+
+    protected function getMultipleAttachmentData(array $files): array
+    {
+        $data = [];
+
+        foreach ($files as $file) {
+            $data[] = $this->getAttachmentData($file);
+        }
+
+        return $data;
+    }
+
+    /**
      * @brief Sends an email
      * @param Email $email The email to send
      * @param mixed $res The response from the server
      * @return bool True if send succed, false otherwise
      */
-    public function sendMail(Email $email, &$res = null): bool
+    public function sendMail(Email $email, &$res = null, string $campaignId = "", string $messageId = ""): bool
     {
         $data = [];
         $message = [];
 
         $message ["From"] = $this->getAddressData($email->getFrom());
+        $message ["ReplyTo"] = $this->getAddressData($email->getReply());
         $message ["To"] = $this->getMultipleAddressesData($email->getTo());
+
+        if (!empty($email->getCc())) {
+            $message ["Cc"] = $this->getMultipleAddressesData($email->getCc());
+        }
+
+        if (!empty($email->getBcc())) {
+            $message ["Bcc"] = $this->getMultipleAddressesData($email->getBcc());
+        }
+
         $message ["Subject"] = $email->getSubject();
         $message ["TextPart"] = $email->getAlternateContent();
         $message ["HTMLPart"] = $email->getMessage();
+
+        if (!empty($email->getAttachments())) {
+            $message["Attachments"] = $this->getMultipleAttachmentData($email->getAttachments());
+        }
 
         $data["Messages"] = [$message];
 
         if ($this->sandbox) {
             $data["SandboxMode"] = true;
+        }
+
+        if ($campaignId !== "") {
+            $message["CustomCampaign"] = $campaignId;
+        }
+
+        if ($messageId !== "") {
+            $message["CustomID"] = $messageId;
+        }
+
+        if ($this->deduplicate && $campaignId !== "") {
+            $message["DeduplicateCampaign"] = true;
+        }
+
+        if (!empty($email->getHeaders())) {
+            $message["Headers"] = [];
+            $headers = $email->getHeaders();
+
+            foreach ($headers as $header => $value) {
+                $message["Headers"][$header] = $value;
+            }
         }
 
         $response = $this->mailjet->post(\Mailjet\Resources::$Email, ["body" => $data]);
@@ -112,18 +181,31 @@ class EasyMailjet
 
     /**
      * @brief Enables or disables sandbox mode
-     * @param bool $val
+     * @param bool $val The value of the parameter
      * @return void
      *
-     * By setting the SandboxMode property to a true value, you will turn off the delivery
+     * From mailjet: By setting the SandboxMode property to a true value, you will turn off the delivery
      * of the message while still getting back the full range of error messages that could
      * be related to your message processing. If the message is processed without error,
      * the response will follow the normal response payload format,
      * omitting only the MessageID and MessageUUID
      */
-    public function setSandbox(bool $val)
+    public function setSandbox(bool $val): void
     {
         $this->sandbox = $val;
+    }
+
+    /**
+     * @brief Emables the DeduplicateCampaign mode
+     * @param bool $val The value of the parameter
+     * @return void
+     *
+     * From mailjet: Enables or disables the option to send messages
+     * from the same campaign to the same contact multiple times.
+     */
+    public function setDeduplicate(bool $val): void
+    {
+        $this->deduplicate = $val;
     }
 
     /**

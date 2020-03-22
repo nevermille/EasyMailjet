@@ -49,6 +49,8 @@ class EasyMailjetTest extends TestCase
         $email = new Email();
         $email->setFrom(new EmailAddress(getenv("LH_MAIL_SENDER"), "Lianhua Studio"));
         $email->addTo(new EmailAddress("test@yopmail.com", "Test"));
+        $email->addCc(new EmailAddress("test2@yopmail.com", "Test2"));
+        $email->addBcc(new EmailAddress("test3@yopmail.com", "Test3"));
         $email->setMessage("This is an email test by mailjet");
         $email->setSubject("Test message");
 

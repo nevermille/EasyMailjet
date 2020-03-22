@@ -197,16 +197,16 @@
         },
         {
             "name": "lianhua/email",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nevermille/Email.git",
-                "reference": "18fd9db01e9b7e130c1aeb2c282445fbcba728f1"
+                "reference": "b8c3fe7c6f991fb6227e3dbdb02af39b278fe8f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nevermille/Email/zipball/18fd9db01e9b7e130c1aeb2c282445fbcba728f1",
-                "reference": "18fd9db01e9b7e130c1aeb2c282445fbcba728f1",
+                "url": "https://api.github.com/repos/Nevermille/Email/zipball/b8c3fe7c6f991fb6227e3dbdb02af39b278fe8f6",
+                "reference": "b8c3fe7c6f991fb6227e3dbdb02af39b278fe8f6",
                 "shasum": ""
             },
             "require": {
@@ -233,7 +233,7 @@
                 }
             ],
             "description": "A simple PHP class for emails",
-            "time": "2020-03-21T12:01:43+00:00"
+            "time": "2020-03-22T11:31:33+00:00"
         },
         {
             "name": "mailjet/mailjet-apiv3-php",
